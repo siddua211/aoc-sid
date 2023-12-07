@@ -76,7 +76,6 @@ fun main() {
         }
         map.forEach { (key, value) ->
             if (value.size == 2) {
-                key.println()
                 res += value[0].toInt() * value[1].toInt()
             }
         }
