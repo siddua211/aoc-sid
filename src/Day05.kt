@@ -46,15 +46,41 @@ fun main() {
         return min
     }
 
-    fun part2(input: List<String>): Int {
-        return input.size
+    fun getInput(input: ArrayList<ArrayList<Triple<BigInteger, BigInteger, BigInteger>>>, output: BigInteger): BigInteger {
+        var curVal = output
+        for (i in input.size - 1 downTo 0) {
+            for (j in input[i].indices) {
+                if (curVal in input[i][j].first .. input[i][j].third - input[i][j].second + input[i][j].first) {
+                    curVal = curVal + input[i][j].second - input[i][j].first
+                    break
+                }
+            }
+        }
+        return curVal
+    }
+
+    fun part2(input: List<String>): BigInteger {
+        val seeds = input[0].split(" ")
+        seeds.removeFirst()
+        var output = BigInteger("0")
+        val ranges = createRanges(input)
+        while (true) {
+            val end = getInput(ranges, output)
+            for (index in seeds.indices step 2) {
+                if (end in seeds[index].toBigInteger() .. (seeds[index + 1].toBigInteger()) + seeds[index].toBigInteger() - 1.toBigInteger()) {
+                    return output
+                }
+            }
+            output++
+        }
     }
 
     // test if implementation meets criteria from the description, like:
     val testInput = readInput("Day05_test")
     check(part1(testInput) == 35.toBigInteger())
+    check(part2(testInput) == 46.toBigInteger())
 
     val input = readInput("Day05")
     part1(input).println()
-//    part2(input).println()
+    part2(input).println()
 }
